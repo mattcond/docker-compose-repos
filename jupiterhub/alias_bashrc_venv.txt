@@ -1,0 +1,17 @@
+#########    ALIAS PER VENV SU JUPITER     ###########
+
+jhvenv() {
+  if [ -z "$1" ]; then
+    echo "Usage: jhvenv <env_name>"
+    return 1
+  fi
+
+  docker exec jupyter-datascience bash -c "
+    python -m venv /opt/virtualenvs/$1 && \
+    /opt/virtualenvs/$1/bin/pip install --upgrade pip && \
+    /opt/virtualenvs/$1/bin/pip install ipykernel && \
+    /opt/virtualenvs/$1/bin/python -m ipykernel install --name=$1 --display-name 'Python ($1)'
+  "
+
+  echo "Virtual environment '$1' created and kernel registered as 'Python ($1)'."
+}
